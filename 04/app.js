@@ -1,7 +1,28 @@
 document.addEventListener('DOMContentLoaded', init);
 
+const inputColor = document.querySelector('input[name="color"]');
+const inputRange = document.querySelector('input[name="opacity"]');
+const boxElement = document.querySelector('.box')  // nie podoba mi się, że muszę pobrać ten sam element tutaj...
+let opacity;
+let color;
+
+inputColor.addEventListener('change', changeColorAndOpacity);
+inputRange.addEventListener('change', changeColorAndOpacity);
+
+function changeColorAndOpacity(e){
+    if(e.target.name == 'color'){
+        color = e.target.value;
+    }
+    if(e.target.name == 'opacity'){
+        opacity = e.target.value;
+        opacity = opacity/100;
+    }
+    setBoxShadow(boxElement,color, opacity)
+}
+
 function init() {
-    const boxElement = document.querySelector('.box');
+    const boxElement = document.querySelector('.box');   //...i tutaj. Można to lepiej rozegrać?
+    
     setBoxShadow(boxElement, '#000000');
 }
 
@@ -15,6 +36,7 @@ function setBoxShadow(element, colorInHex, opacity = 1) {
 
     element.style.boxShadow = `0 0 5px 5px ${colorInRGBA}`;
 }
+
 
 
 function getChannelColor(colorInHex, channelName) {
@@ -36,5 +58,3 @@ function getChannelColor(colorInHex, channelName) {
 
     return channelColorDec; 
 }
-
-
