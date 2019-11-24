@@ -4,7 +4,7 @@ const inputColor = document.querySelector('input[name="color"]');
 const inputRange = document.querySelector('input[name="opacity"]');
 const boxElement = document.querySelector('.box')  // nie podoba mi się, że muszę pobrać ten sam element tutaj...
 let opacity;
-let color;
+let color = '#000000';
 
 inputColor.addEventListener('change', changeColorAndOpacity);
 inputRange.addEventListener('change', changeColorAndOpacity);
@@ -20,6 +20,7 @@ function changeColorAndOpacity(e){
     setBoxShadow(boxElement,color, opacity)
 }
 
+console.log(opacity, color)
 function init() {
     const boxElement = document.querySelector('.box');   //...i tutaj. Można to lepiej rozegrać?
     
