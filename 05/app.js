@@ -10,15 +10,11 @@ const forbiddenChars = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
 const forbiddenCharsWithoutSpace = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
 
 function sendForm(e) {
+
     e.preventDefault();
 
-    fullNameValidation(firstName);
-    fullNameValidation(lastName);
-    validationForCitiesAndStreets(street);
-    validationForCitiesAndStreets(city);
-
     function fullNameValidation(name) {
-        if (isNaN(name.value) && !forbiddenChars.test(name.value)) {
+        if (!name.value == '' && !forbiddenChars.test(name.value)) {
             console.log('lalalal');
         }
         else {
@@ -27,13 +23,21 @@ function sendForm(e) {
     }
 
     function validationForCitiesAndStreets(name) {
-        if (isNaN(name.value) && !forbiddenCharsWithoutSpace.test(name.value)) {
+        if (!name.value == '' && !forbiddenCharsWithoutSpace.test(name.value)) {
             console.log('lalalal');
         }
         else {
             console.log('co ty tworzysz');
         }
     }
+
+    fullNameValidation(firstName);
+    fullNameValidation(lastName);
+    validationForCitiesAndStreets(street);
+    validationForCitiesAndStreets(city);
+
+    
+
 
 
 
