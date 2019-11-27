@@ -15,8 +15,6 @@ function sendForm(e) {
 
     e.preventDefault();
 
-
-
     function fullNameValidation(name) {
         if (name.value == '' || forbiddenChars.test(name.value)) {
             console.log('co ty tworzysz');
@@ -34,22 +32,44 @@ function sendForm(e) {
         }
     }
 
-    function validationForNumbers(number){
-        if(isNaN(number) || number.value == ''){
+    function validationForHouse(number) {
+        if (number.value <= 0 || number.value == '') {
             console.log('co ty tworzysz')
         }
-        else{
+        else {
             console.log('dobrze');
+        }
+    }
+
+    function validateForFlat(number) {
+        if (number.value == '' || number.value > 0) {
+            console.log('dobrze')
+        }
+        else {
+            console.log('co ty tworzysz');
+        }
+    }
+    function validateForZipCode(code) {
+        console.log(code.value)
+        const codeReg = /^[\d]{2}-[\d]{3}$/g;
+        const result = code.value.match(codeReg);
+        console.log(result)
+        if (result !== null) {
+            console.log('dobrze')
+        }
+        else {
+            console.log('co ty tworzysz')
         }
 
     }
-
+    validateForZipCode(zip);
     fullNameValidation(firstName);
     fullNameValidation(lastName);
     validationForCitiesAndStreets(street);
     validationForCitiesAndStreets(city);
-    validationForNumbers(houseNumber);
-    
+    validationForHouse(houseNumber);
+    validateForFlat(flatNumber);
+
 
 
 
