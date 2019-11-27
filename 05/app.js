@@ -1,4 +1,5 @@
 const form = document.querySelector('form');
+const ulElement = document.querySelector('.messages');
 
 form.noValidate = true;
 
@@ -8,37 +9,55 @@ form.autocomplete = 'off';
 
 const { firstName, lastName, street, houseNumber, flatNumber, zip, city, voivodeship } = form.elements;
 
-const forbiddenChars = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
-const forbiddenCharsWithoutSpace = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
+const forbiddenChars = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\d]/;
+const forbiddenCharsWithoutSpace = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\d]/;
 
 function sendForm(e) {
 
     e.preventDefault();
 
+    function ifInvalidInput(name) {
+        const newLi = document.createElement('li');
+        newLi.innerText = `Invalid data: ${name}`;
+        ulElement.appendChild(newLi);
+    }
+
     function fullNameValidation(name) {
         if (name.value == '' || forbiddenChars.test(name.value)) {
-            console.log('co ty tworzysz');
+            let validName
+            if (name.name == 'firstName') {
+                validName = name.name
+            }
+            else {
+                validName = name.name
+            }
+            ifInvalidInput(validName);
+
         }
-        else {
-            console.log('dobrze');
-        }
+
     }
     function validationForCitiesAndStreets(name) {
         if (name.value == '' || forbiddenCharsWithoutSpace.test(name.value)) {
-            console.log('co ty tworzytsz');
+
+            let validName
+            if (name.name == 'street') {
+                validName = name.name
+            }
+            else {
+                validName = name.name
+            }
+            ifInvalidInput(validName);
+
         }
-        else {
-            console.log('dobrze');
-        }
+
     }
 
     function validationForHouse(number) {
         if (number.value <= 0 || number.value == '') {
-            console.log('co ty tworzysz')
+            let validName = number.name;
+            ifInvalidInput(validName);
         }
-        else {
-            console.log('dobrze');
-        }
+
     }
 
     function validateForFlat(number) {
@@ -46,11 +65,11 @@ function sendForm(e) {
             console.log('dobrze')
         }
         else {
-            console.log('co ty tworzysz');
+            let validName = number.name;
+            ifInvalidInput(validName)
         }
     }
     function validateForZipCode(code) {
-        console.log(code.value)
         const codeReg = /^[\d]{2}-[\d]{3}$/g;
         const result = code.value.match(codeReg);
         console.log(result)
@@ -58,17 +77,30 @@ function sendForm(e) {
             console.log('dobrze')
         }
         else {
-            console.log('co ty tworzysz')
+            let validName = code.name;
+            ifInvalidInput(validName)
         }
 
     }
-    validateForZipCode(zip);
+
+    function validateForVoivodeship(region) {
+        if (region.value == '') {
+            let validName = region.name;
+            ifInvalidInput(validName)
+        }
+
+
+
+    }
     fullNameValidation(firstName);
     fullNameValidation(lastName);
     validationForCitiesAndStreets(street);
-    validationForCitiesAndStreets(city);
     validationForHouse(houseNumber);
     validateForFlat(flatNumber);
+    validateForZipCode(zip);
+    validationForCitiesAndStreets(city);
+    validateForVoivodeship(voivodeship);
+
 
 
 
