@@ -60,7 +60,7 @@ function sendForm(e) {
     }
 
     function validateForFlat(number) {
-        if (number.value !== '' || number.value < 0) {
+        if (number.value < 0) {
             let validName = number.name;
             ifInvalidInput(validName)
         }
