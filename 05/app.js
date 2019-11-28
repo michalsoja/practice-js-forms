@@ -7,10 +7,9 @@ form.addEventListener('submit', sendForm);
 
 form.autocomplete = 'off';
 
-const { firstName, lastName, street, houseNumber, flatNumber, zip, city, voivodeship } = form.elements;
+let { firstName, lastName, street, houseNumber, flatNumber, zip, city, voivodeship } = form.elements;
 
-const forbiddenChars = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\d]/;
-const forbiddenCharsWithoutSpace = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\d]/;
+const allowedChars = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]+$/u
 
 function sendForm(e) {
 
@@ -23,7 +22,7 @@ function sendForm(e) {
     }
 
     function fullNameValidation(name) {
-        if (name.value == '' || forbiddenChars.test(name.value)) {
+        if (name.value == '' || !allowedChars.test(name.value)) {
             let validName
             if (name.name == 'firstName') {
                 validName = name.name
@@ -37,7 +36,7 @@ function sendForm(e) {
 
     }
     function validationForCitiesAndStreets(name) {
-        if (name.value == '' || forbiddenCharsWithoutSpace.test(name.value)) {
+        if (name.value == '' || !allowedChars.test(name.value)) {
 
             let validName
             if (name.name == 'street') {
@@ -61,10 +60,7 @@ function sendForm(e) {
     }
 
     function validateForFlat(number) {
-        if (number.value == '' || number.value > 0) {
-            console.log('dobrze')
-        }
-        else {
+        if (number.value !== '' || number.value < 0) {
             let validName = number.name;
             ifInvalidInput(validName)
         }
@@ -72,15 +68,10 @@ function sendForm(e) {
     function validateForZipCode(code) {
         const codeReg = /^[\d]{2}-[\d]{3}$/g;
         const result = code.value.match(codeReg);
-        console.log(result)
-        if (result !== null) {
-            console.log('dobrze')
-        }
-        else {
+        if (result == null) {
             let validName = code.name;
             ifInvalidInput(validName)
         }
-
     }
 
     function validateForVoivodeship(region) {
@@ -88,7 +79,6 @@ function sendForm(e) {
             let validName = region.name;
             ifInvalidInput(validName)
         }
-
 
 
     }
@@ -101,12 +91,12 @@ function sendForm(e) {
     validationForCitiesAndStreets(city);
     validateForVoivodeship(voivodeship);
 
-
-
-
-
-
-
+    if (ulElement.childNodes.length == 0) {
+        alert('Dane prawidłowe!');
+        for (let i = 0; form.elements.length - 1 > i; i++) {
+            form.elements[i].value = '';
+        }
+    }
 
 }
 
