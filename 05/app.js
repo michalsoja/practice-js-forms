@@ -11,93 +11,83 @@ let { firstName, lastName, street, houseNumber, flatNumber, zip, city, voivodesh
 
 const allowedChars = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]+$/u
 
+let errors = [];
+
 function sendForm(e) {
 
     e.preventDefault();
 
-    function ifInvalidInput(name) {
-        const newLi = document.createElement('li');
-        newLi.innerText = `Invalid data: ${name}`;
-        ulElement.appendChild(newLi);
+     while(ulElement.firstChild) {
+         ulElement.removeChild(ulElement.firstChild);
     }
 
-    function fullNameValidation(name) {
-        if (name.value == '' || !allowedChars.test(name.value)) {
-            let validName
-            if (name.name == 'firstName') {
-                validName = name.name
-            }
-            else {
-                validName = name.name
-            }
-            ifInvalidInput(validName);
-
-        }
-
-    }
-    function validationForCitiesAndStreets(name) {
-        if (name.value == '' || !allowedChars.test(name.value)) {
-
-            let validName
-            if (name.name == 'street') {
-                validName = name.name
-            }
-            else {
-                validName = name.name
-            }
-            ifInvalidInput(validName);
-
-        }
-
-    }
-
-    function validationForHouse(number) {
-        if (number.value <= 0 || number.value == '') {
-            let validName = number.name;
-            ifInvalidInput(validName);
-        }
-
-    }
-
-    function validateForFlat(number) {
-        if (number.value < 0) {
-            let validName = number.name;
-            ifInvalidInput(validName)
-        }
-    }
-    function validateForZipCode(code) {
-        const codeReg = /^[\d]{2}-[\d]{3}$/g;
-        const result = code.value.match(codeReg);
-        if (result == null) {
-            let validName = code.name;
-            ifInvalidInput(validName)
-        }
-    }
-
-    function validateForVoivodeship(region) {
-        if (region.value == '') {
-            let validName = region.name;
-            ifInvalidInput(validName)
-        }
-
-
-    }
     fullNameValidation(firstName);
     fullNameValidation(lastName);
-    validationForCitiesAndStreets(street);
-    validationForHouse(houseNumber);
-    validateForFlat(flatNumber);
+    cityAndStreetValidation(street);
+    houseNumberValidation(houseNumber);
+    flatNumberValidation(flatNumber);
     validateForZipCode(zip);
-    validationForCitiesAndStreets(city);
-    validateForVoivodeship(voivodeship);
+    cityAndStreetValidation(city);
+    regionValidation(voivodeship);
 
-    if (ulElement.childNodes.length == 0) {
+    if(errors.length > 0){
+        errors.forEach(element =>{
+            const newLi = document.createElement('li');
+            newLi.innerText = element;
+            ulElement.appendChild(newLi);
+        })
+    }
+    else{
         alert('Dane prawidłowe!');
-        for (let i = 0; form.elements.length - 1 > i; i++) {
-            form.elements[i].value = '';
+    }
+    errors = [];
+}
+
+
+function fullNameValidation(fullName) {
+    if (fullName.value == '' || !allowedChars.test(fullName.value)) {
+
+        if (fullName.name == 'firstName') {
+            errors.push('First Name is required')
+        }
+        else {
+            errors.push('Last name is required')
         }
     }
+}
+function cityAndStreetValidation(data) {
+    if (data.value == '' || !allowedChars.test(data.value)) {
 
+        if (data.name == 'street') {
+            errors.push('Street is required')
+        }
+        else {
+            errors.push('City is required')
+        }
+    }
+}
+
+function houseNumberValidation(houseNumber) {
+    if (houseNumber.value <= 0 || houseNumber.value == '') {
+        errors.push('House number name is required')
+    }
+}
+function flatNumberValidation(flatNumber) {
+    if (flatNumber.value < 0) {
+        errors.push('Wrong flat number value')
+    }
+}
+function validateForZipCode(zipCode) {
+    const codeReg = /^[\d]{2}-[\d]{3}$/g;
+    const result = zipCode.value.match(codeReg);
+    if (result == null) {
+        errors.push('Wrong zipCode value')
+    }
+}
+function regionValidation(region) {
+    if (region.value == '') {
+        errors.push('Wrong region value')
+    }
 }
 
 
